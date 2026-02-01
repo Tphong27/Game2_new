@@ -1,0 +1,1426 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ĐƯỜNG ĐUA NƯỚC - Flow Race</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #1a5276 0%,
+          #2980b9 50%,
+          #5dade2 100%
+        );
+        min-height: 100vh;
+        color: #fff;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        text-align: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+        margin-bottom: 20px;
+      }
+
+      header h1 {
+        font-size: 2.5em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        margin-bottom: 10px;
+      }
+
+      header h1 span {
+        color: #5dade2;
+      }
+
+      .water-emoji {
+        animation: wave 1s ease-in-out infinite;
+      }
+
+      @keyframes wave {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      /* Game Setup */
+      .setup-screen {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+      }
+
+      .setup-screen h2 {
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        padding: 15px 30px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin: 10px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(45deg, #27ae60, #2ecc71);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 20px rgba(46, 204, 113, 0.5);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+        color: white;
+      }
+
+      .btn-answer {
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        color: white;
+        display: block;
+        width: 100%;
+        text-align: left;
+        margin: 10px 0;
+        padding: 15px 20px;
+      }
+
+      .btn-answer:hover {
+        transform: translateX(10px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.5);
+      }
+
+      .btn-true {
+        background: linear-gradient(45deg, #27ae60, #2ecc71);
+      }
+
+      .btn-false {
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+      }
+
+      /* Game Board */
+      .game-board {
+        display: none;
+      }
+
+      .game-board.active {
+        display: block;
+      }
+
+      .tracks-container {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .track {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 15px;
+        position: relative;
+      }
+
+      .track-header {
+        text-align: center;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        margin-bottom: 15px;
+      }
+
+      .track-header h3 {
+        font-size: 1.3em;
+      }
+
+      .track-header .groups {
+        font-size: 0.9em;
+        color: #aed6f1;
+      }
+
+      .race-path {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .checkpoint {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2em;
+        position: relative;
+        transition: all 0.3s;
+      }
+
+      .checkpoint.start {
+        background: linear-gradient(45deg, #27ae60, #2ecc71);
+        width: 80px;
+        height: 40px;
+        border-radius: 20px;
+      }
+
+      .checkpoint.finish {
+        background: linear-gradient(45deg, #f39c12, #e67e22);
+        width: 80px;
+        height: 40px;
+        border-radius: 20px;
+      }
+
+      .checkpoint.normal {
+        background: linear-gradient(45deg, #3498db, #2980b9);
+      }
+
+      .checkpoint.fork {
+        background: linear-gradient(45deg, #9b59b6, #8e44ad);
+        width: 70px;
+        height: 70px;
+      }
+
+      .checkpoint.current {
+        animation: pulse 1s infinite;
+        box-shadow: 0 0 20px #5dade2;
+      }
+
+      .checkpoint.passed {
+        background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+        opacity: 0.7;
+      }
+
+      .water-marker {
+        position: absolute;
+        font-size: 1.5em;
+        animation: float 1s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      .connector {
+        width: 4px;
+        height: 20px;
+        background: linear-gradient(to bottom, #5dade2, #3498db);
+      }
+
+      .fork-container {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+      }
+
+      .fork-branch {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .branch-label {
+        font-size: 0.8em;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+
+      .branch-fast .branch-label {
+        background: #e74c3c;
+      }
+
+      .branch-slow .branch-label {
+        background: #27ae60;
+      }
+
+      /* Info Panel */
+      .info-panel {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .current-turn {
+        flex: 1;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+      }
+
+      .current-turn h3 {
+        margin-bottom: 10px;
+        color: #f1c40f;
+      }
+
+      .current-turn .team-name {
+        font-size: 2em;
+        font-weight: bold;
+      }
+
+      .scoreboard {
+        flex: 2;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        border-radius: 15px;
+      }
+
+      .scoreboard h3 {
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .score-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .score-item {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .score-item .name {
+        font-weight: bold;
+        color: #f1c40f;
+      }
+
+      .score-item .points {
+        font-size: 1.5em;
+      }
+
+      /* Question Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        padding: 30px;
+        border-radius: 20px;
+        max-width: 700px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+      }
+
+      .modal-content h2 {
+        color: #f1c40f;
+        margin-bottom: 10px;
+      }
+
+      .difficulty-badge {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        margin-bottom: 20px;
+      }
+
+      .difficulty-easy {
+        background: #27ae60;
+      }
+
+      .difficulty-medium {
+        background: #f39c12;
+      }
+
+      .difficulty-hard {
+        background: #e74c3c;
+      }
+
+      .question-text {
+        font-size: 1.3em;
+        line-height: 1.6;
+        margin-bottom: 25px;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+      }
+
+      .answer-input {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.1em;
+        border: none;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+      }
+
+      .result-display {
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        font-size: 1.2em;
+      }
+
+      .result-correct {
+        background: rgba(39, 174, 96, 0.3);
+        border: 2px solid #27ae60;
+      }
+
+      .result-wrong {
+        background: rgba(231, 76, 60, 0.3);
+        border: 2px solid #e74c3c;
+      }
+
+      .answer-reveal {
+        margin-top: 15px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
+
+      /* Fork Choice Modal */
+      .fork-choice {
+        text-align: center;
+      }
+
+      .fork-choice .btn {
+        margin: 15px;
+        padding: 20px 40px;
+      }
+
+      /* Winner Screen */
+      .winner-screen {
+        display: none;
+        text-align: center;
+        padding: 50px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 20px;
+      }
+
+      .winner-screen.active {
+        display: block;
+      }
+
+      .winner-screen h2 {
+        font-size: 3em;
+        color: #f1c40f;
+        margin-bottom: 20px;
+      }
+
+      .final-scores {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 30px 0;
+      }
+
+      .final-score-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 15px;
+        min-width: 200px;
+      }
+
+      .final-score-card.first {
+        background: linear-gradient(45deg, #f1c40f, #f39c12);
+        transform: scale(1.1);
+      }
+
+      .final-score-card.second {
+        background: linear-gradient(45deg, #bdc3c7, #95a5a6);
+      }
+
+      .final-score-card.third {
+        background: linear-gradient(45deg, #e67e22, #d35400);
+      }
+
+      .trophy {
+        font-size: 3em;
+        margin-bottom: 10px;
+      }
+
+      /* Timer */
+      .timer {
+        font-size: 2em;
+        color: #f1c40f;
+        margin: 15px 0;
+      }
+
+      .timer.warning {
+        color: #e74c3c;
+        animation: blink 0.5s infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Rules Panel */
+      .rules-panel {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 20px;
+      }
+
+      .rules-panel h3 {
+        color: #f1c40f;
+        margin-bottom: 15px;
+      }
+
+      .rules-panel ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .rules-panel li {
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .rules-panel li:last-child {
+        border-bottom: none;
+      }
+
+      .rules-panel li::before {
+        content: "💧 ";
+      }
+
+      /* Responsive */
+      @media (max-width: 1000px) {
+        .tracks-container {
+          flex-direction: column;
+        }
+
+        .info-panel {
+          flex-direction: column;
+        }
+
+        .fork-container {
+          gap: 15px;
+        }
+
+        .checkpoint {
+          width: 50px;
+          height: 50px;
+          font-size: 1em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>
+          <span class="water-emoji">🌊</span> ĐƯỜNG ĐUA <span>NƯỚC</span>
+          <span class="water-emoji">💧</span>
+        </h1>
+        <p>
+          Flow Race - Phần I: Cội nguồn Triết học – Vũ trụ quan & Hình thái Ý
+          thức
+        </p>
+      </header>
+
+      <!-- Setup Screen -->
+      <div id="setupScreen" class="setup-screen">
+        <h2>🎮 Chào mừng đến với ĐƯỜNG ĐUA NƯỚC!</h2>
+        <p style="margin: 20px 0; line-height: 1.8">
+          Ba đội A, B, C sẽ thi đua đưa "dòng nước" về đích.<br />
+          Trả lời đúng để tiến lên, sai sẽ mất lượt!<br />
+          Tại ngã rẽ (FORK): đúng = chọn đường, sai = đi đường vòng!
+        </p>
+        <button class="btn btn-primary" onclick="startGame()">
+          🚀 BẮT ĐẦU CHƠI
+        </button>
+
+        <div class="rules-panel" style="margin-top: 30px; text-align: left">
+          <h3>📋 Luật chơi</h3>
+          <ul>
+            <li>
+              <strong>Chia đội:</strong> 3 nhóm lớn (A, B, C), mỗi nhóm có 3
+              nhóm nhỏ (1-2-3, 4-5-6, 7-9-10)
+            </li>
+            <li>
+              <strong>Lượt chơi:</strong> Các nhóm nhỏ luân phiên trong nhóm lớn
+              (1→2→3→1...)
+            </li>
+            <li>
+              <strong>Trả lời đúng:</strong> Tiến 1 checkpoint (+10 điểm cho
+              nhóm nhỏ)
+            </li>
+            <li><strong>Trả lời sai:</strong> Đứng lại, mất lượt</li>
+            <li>
+              <strong>FORK:</strong> Đúng = chọn nhánh; Sai = bị đẩy sang nhánh
+              vòng
+            </li>
+            <li><strong>Về đích:</strong> Nhất +50, Nhì +30, Ba +20</li>
+            <li>
+              <strong>⏱️ Thời gian:</strong> Dễ = 7s, Khó = 10s, Rất khó = 15s.
+              Hết giờ = mất lượt!
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Game Board -->
+      <div id="gameBoard" class="game-board">
+        <!-- Info Panel -->
+        <div class="info-panel">
+          <div class="current-turn">
+            <h3>🎯 LƯỢT HIỆN TẠI</h3>
+            <div id="currentTeam" class="team-name">A1</div>
+            <button
+              class="btn btn-primary"
+              onclick="showQuestion()"
+              style="margin-top: 15px"
+            >
+              📝 BẮT ĐẦU CÂU HỎI
+            </button>
+          </div>
+          <div class="scoreboard">
+            <h3>🏆 BẢNG ĐIỂM NHÓM NHỎ</h3>
+            <div class="score-grid" id="scoreGrid">
+              <!-- Generated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Race Tracks -->
+        <div class="tracks-container" id="tracksContainer">
+          <!-- Generated by JS -->
+        </div>
+      </div>
+
+      <!-- Winner Screen -->
+      <div id="winnerScreen" class="winner-screen">
+        <h2>🎊 KẾT THÚC! 🎊</h2>
+        <div class="final-scores" id="finalScores">
+          <!-- Generated by JS -->
+        </div>
+        <button class="btn btn-primary" onclick="resetGame()">
+          🔄 CHƠI LẠI
+        </button>
+      </div>
+    </div>
+
+    <!-- Question Modal -->
+    <div id="questionModal" class="modal">
+      <div class="modal-content">
+        <h2 id="modalTitle">
+          ❓ Câu hỏi cho nhóm <span id="questionTeam"></span>
+        </h2>
+        <span id="difficultyBadge" class="difficulty-badge"></span>
+        <div class="timer" id="timerDisplay">
+          ⏱️ <span id="timeLeft">7</span>s
+        </div>
+        <div id="questionContent">
+          <!-- Question content goes here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Fork Choice Modal -->
+    <div id="forkModal" class="modal">
+      <div class="modal-content fork-choice">
+        <h2>🔀 CHỌN ĐƯỜNG ĐI!</h2>
+        <p style="margin: 20px 0">
+          Chúc mừng! Bạn trả lời đúng và được quyền chọn nhánh:
+        </p>
+        <button class="btn btn-secondary" onclick="chooseFork('fast')">
+          ⚡ Nhánh NHANH<br />
+          <small>(Ít checkpoint, câu hỏi khó)</small>
+        </button>
+        <button class="btn btn-primary" onclick="chooseFork('slow')">
+          🌿 Nhánh VÒNG<br />
+          <small>(Nhiều checkpoint, câu hỏi dễ)</small>
+        </button>
+      </div>
+    </div>
+
+    <!-- Load questions from external file -->
+    <script src="questions.js"></script>
+
+    <script>
+      // ==================== GAME STATE ====================
+      let gameState = {
+        started: false,
+        finished: false,
+        teams: {
+          A: {
+            position: 0,
+            branch: null,
+            subTeams: ["1", "2", "3"],
+            currentSubTeam: 0,
+            finishOrder: 0,
+          },
+          B: {
+            position: 0,
+            branch: null,
+            subTeams: ["4", "5", "6"],
+            currentSubTeam: 0,
+            finishOrder: 0,
+          },
+          C: {
+            position: 0,
+            branch: null,
+            subTeams: ["7", "8", "10"],
+            currentSubTeam: 0,
+            finishOrder: 0,
+          },
+        },
+        scores: {
+          1: 0,
+          2: 0,
+          3: 0,
+          4: 0,
+          5: 0,
+          6: 0,
+          7: 0,
+          8: 0,
+          10: 0,
+        },
+        currentTeamIndex: 0,
+        teamOrder: ["A", "B", "C"],
+        finishedTeams: [],
+        currentQuestion: null,
+        pendingForkChoice: null,
+        usedQuestions: { easy: [], medium: [], hard: [] },
+      };
+
+      // Track structure:
+      // 0=START, 1=CP1, 2=CP2, 3=FORK1,
+      // Fast: 4=CP3(hard), 5=FORK2
+      // Slow: 4a=CP3a(easy), 4b=CP3b(easy), 5=FORK2
+      // 6=CP5, 7=FINISH
+      const trackStructure = {
+        mainPath: [
+          { type: "start", label: "START" },
+          { type: "checkpoint", label: "①", difficulty: "easy" },
+          { type: "checkpoint", label: "②", difficulty: "easy" },
+          { type: "fork", label: "FORK", id: 1 },
+        ],
+        fastBranch1: [{ type: "checkpoint", label: "③", difficulty: "hard" }],
+        slowBranch1: [
+          { type: "checkpoint", label: "③a", difficulty: "easy" },
+          { type: "checkpoint", label: "③b", difficulty: "easy" },
+        ],
+        afterFork1: [{ type: "fork", label: "FORK", id: 2 }],
+        fastBranch2: [{ type: "checkpoint", label: "④", difficulty: "hard" }],
+        slowBranch2: [
+          { type: "checkpoint", label: "④a", difficulty: "medium" },
+          { type: "checkpoint", label: "④b", difficulty: "medium" },
+        ],
+        finalPath: [
+          { type: "checkpoint", label: "⑤", difficulty: "hard" },
+          { type: "finish", label: "FINISH" },
+        ],
+      };
+
+      // ==================== GAME FUNCTIONS ====================
+
+      function startGame() {
+        gameState.started = true;
+        document.getElementById("setupScreen").style.display = "none";
+        document.getElementById("gameBoard").classList.add("active");
+        renderTracks();
+        renderScoreboard();
+        updateCurrentTeam();
+      }
+
+      function resetGame() {
+        gameState = {
+          started: false,
+          finished: false,
+          teams: {
+            A: {
+              position: 0,
+              branch: null,
+              subTeams: ["1", "2", "3"],
+              currentSubTeam: 0,
+              finishOrder: 0,
+            },
+            B: {
+              position: 0,
+              branch: null,
+              subTeams: ["4", "5", "6"],
+              currentSubTeam: 0,
+              finishOrder: 0,
+            },
+            C: {
+              position: 0,
+              branch: null,
+              subTeams: ["7", "8", "10"],
+              currentSubTeam: 0,
+              finishOrder: 0,
+            },
+          },
+          scores: {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            10: 0,
+          },
+          currentTeamIndex: 0,
+          teamOrder: ["A", "B", "C"],
+          finishedTeams: [],
+          currentQuestion: null,
+          currentDifficulty: null,
+          pendingForkChoice: null,
+          usedQuestions: { easy: [], medium: [], hard: [] },
+          timerInterval: null,
+          timeLeft: 0,
+        };
+        document.getElementById("winnerScreen").classList.remove("active");
+        document.getElementById("setupScreen").style.display = "block";
+        document.getElementById("gameBoard").classList.remove("active");
+      }
+
+      function getCurrentTeam() {
+        return gameState.teamOrder[gameState.currentTeamIndex];
+      }
+
+      function getCurrentSubTeam() {
+        const team = getCurrentTeam();
+        const teamData = gameState.teams[team];
+        return teamData.subTeams[teamData.currentSubTeam];
+      }
+
+      function getTeamPosition(team) {
+        return gameState.teams[team].position;
+      }
+
+      function getNextCheckpoint(team) {
+        const pos = getTeamPosition(team);
+        const branch = gameState.teams[team].branch;
+
+        // Calculate total positions based on branches chosen
+        let totalPos = 0;
+        let currentPath = [];
+
+        // Main path: positions 0-3 (START, CP1, CP2, FORK1)
+        if (pos <= 3) {
+          return { pos: pos, section: "main" };
+        }
+
+        // After FORK1
+        if (pos <= 6) {
+          const branchPos = pos - 4;
+          if (gameState.teams[team].branch === "fast") {
+            // Fast branch: 1 checkpoint
+            if (branchPos === 0) return { pos: pos, section: "fast1" };
+            return { pos: pos, section: "afterFork1" };
+          } else {
+            // Slow branch: 2 checkpoints
+            if (branchPos <= 1) return { pos: pos, section: "slow1" };
+            return { pos: pos, section: "afterFork1" };
+          }
+        }
+
+        // After FORK2
+        if (pos <= 9) {
+          const branchPos = pos - 7;
+          if (gameState.teams[team].branch2 === "fast") {
+            if (branchPos === 0) return { pos: pos, section: "fast2" };
+            return { pos: pos, section: "final" };
+          } else {
+            if (branchPos <= 1) return { pos: pos, section: "slow2" };
+            return { pos: pos, section: "final" };
+          }
+        }
+
+        return { pos: pos, section: "final" };
+      }
+
+      function getDifficultyForPosition(team) {
+        const pos = getTeamPosition(team);
+        const teamData = gameState.teams[team];
+
+        // Positions 1-2: Easy (checkpoints ① ②)
+        if (pos <= 2) return "easy";
+
+        // Position 3: Fork decision (medium question)
+        if (pos === 3) return "medium";
+
+        // After first fork
+        if (pos >= 4 && pos <= 5) {
+          if (teamData.branch === "fast") return "hard";
+          return "easy";
+        }
+
+        // Position 6: Second fork decision
+        if (pos === 6) return "medium";
+
+        // After second fork
+        if (pos >= 7 && pos <= 8) {
+          if (teamData.branch2 === "fast") return "hard";
+          return "medium";
+        }
+
+        // Final checkpoint
+        return "hard";
+      }
+
+      function isAtFork(team) {
+        const pos = getTeamPosition(team);
+        return pos === 3 || pos === 6;
+      }
+
+      function getMaxPosition(team) {
+        const teamData = gameState.teams[team];
+        let max = 10; // Base: START + 5 checkpoints + FINISH
+
+        // Adjust for branch choices
+        if (teamData.branch === "slow") max += 1;
+        if (teamData.branch2 === "slow") max += 1;
+
+        return max;
+      }
+
+      function renderTracks() {
+        const container = document.getElementById("tracksContainer");
+        container.innerHTML = "";
+
+        ["A", "B", "C"].forEach((team) => {
+          const track = document.createElement("div");
+          track.className = "track";
+          track.id = `track-${team}`;
+
+          const teamData = gameState.teams[team];
+          const pos = teamData.position;
+
+          track.innerHTML = `
+                    <div class="track-header">
+                        <h3>🌊 Đội ${team}</h3>
+                        <div class="groups">${teamData.subTeams.join(" - ")}</div>
+                    </div>
+                    <div class="race-path" id="path-${team}">
+                        ${renderPath(team)}
+                    </div>
+                `;
+
+          container.appendChild(track);
+        });
+      }
+
+      function renderPath(team) {
+        const teamData = gameState.teams[team];
+        const pos = teamData.position;
+        let html = "";
+
+        // START
+        html += `<div class="checkpoint start ${pos === 0 ? "current" : "passed"}">${pos === 0 ? "💧" : ""}START</div>`;
+        html += `<div class="connector"></div>`;
+
+        // Checkpoint 1
+        html += `<div class="checkpoint normal ${pos === 1 ? "current" : pos > 1 ? "passed" : ""}">${pos === 1 ? "💧" : ""}①</div>`;
+        html += `<div class="connector"></div>`;
+
+        // Checkpoint 2
+        html += `<div class="checkpoint normal ${pos === 2 ? "current" : pos > 2 ? "passed" : ""}">${pos === 2 ? "💧" : ""}②</div>`;
+        html += `<div class="connector"></div>`;
+
+        // FORK 1
+        html += `<div class="checkpoint fork ${pos === 3 ? "current" : pos > 3 ? "passed" : ""}">${pos === 3 ? "💧" : ""}🔀</div>`;
+
+        // Branch 1
+        if (pos > 3 || teamData.branch) {
+          html += `<div class="connector"></div>`;
+          if (teamData.branch === "fast" || (!teamData.branch && pos <= 3)) {
+            // Show fast branch or both if not chosen yet
+            if (!teamData.branch && pos <= 3) {
+              html += `<div class="fork-container">
+                            <div class="fork-branch branch-fast">
+                                <span class="branch-label">⚡ Nhanh</span>
+                                <div class="checkpoint normal">③</div>
+                            </div>
+                            <div class="fork-branch branch-slow">
+                                <span class="branch-label">🌿 Vòng</span>
+                                <div class="checkpoint normal">③a</div>
+                                <div class="connector"></div>
+                                <div class="checkpoint normal">③b</div>
+                            </div>
+                        </div>`;
+            } else {
+              html += `<div class="checkpoint normal ${pos === 4 ? "current" : pos > 4 ? "passed" : ""}">${pos === 4 ? "💧" : ""}③⚡</div>`;
+            }
+          } else {
+            html += `<div class="checkpoint normal ${pos === 4 ? "current" : pos > 4 ? "passed" : ""}">${pos === 4 ? "💧" : ""}③a</div>`;
+            html += `<div class="connector"></div>`;
+            html += `<div class="checkpoint normal ${pos === 5 ? "current" : pos > 5 ? "passed" : ""}">${pos === 5 ? "💧" : ""}③b</div>`;
+          }
+        }
+
+        // Continue path after fork 1
+        const afterFork1Pos = teamData.branch === "slow" ? 6 : 5;
+        if (pos >= afterFork1Pos || teamData.branch) {
+          html += `<div class="connector"></div>`;
+
+          // FORK 2
+          const fork2Pos = teamData.branch === "slow" ? 6 : 5;
+          html += `<div class="checkpoint fork ${pos === fork2Pos ? "current" : pos > fork2Pos ? "passed" : ""}">${pos === fork2Pos ? "💧" : ""}🔀</div>`;
+
+          // Branch 2
+          if (pos > fork2Pos || teamData.branch2) {
+            html += `<div class="connector"></div>`;
+            const branch2StartPos = fork2Pos + 1;
+
+            if (teamData.branch2 === "fast") {
+              html += `<div class="checkpoint normal ${pos === branch2StartPos ? "current" : pos > branch2StartPos ? "passed" : ""}">${pos === branch2StartPos ? "💧" : ""}④⚡</div>`;
+            } else if (teamData.branch2 === "slow") {
+              html += `<div class="checkpoint normal ${pos === branch2StartPos ? "current" : pos > branch2StartPos ? "passed" : ""}">${pos === branch2StartPos ? "💧" : ""}④a</div>`;
+              html += `<div class="connector"></div>`;
+              html += `<div class="checkpoint normal ${pos === branch2StartPos + 1 ? "current" : pos > branch2StartPos + 1 ? "passed" : ""}">${pos === branch2StartPos + 1 ? "💧" : ""}④b</div>`;
+            }
+          }
+        }
+
+        // Final checkpoint and finish
+        const finalPos = calculateFinalPos(teamData);
+        if (teamData.branch2) {
+          html += `<div class="connector"></div>`;
+          html += `<div class="checkpoint normal ${pos === finalPos ? "current" : pos > finalPos ? "passed" : ""}">${pos === finalPos ? "💧" : ""}⑤</div>`;
+          html += `<div class="connector"></div>`;
+          html += `<div class="checkpoint finish ${pos > finalPos ? "current" : ""}">${pos > finalPos ? "🏆" : ""}FINISH</div>`;
+        }
+
+        return html;
+      }
+
+      function calculateFinalPos(teamData) {
+        let pos = 5; // Base after fork1 fast
+        if (teamData.branch === "slow") pos += 1;
+        pos += 1; // Fork 2
+        if (teamData.branch2 === "fast") pos += 1;
+        else if (teamData.branch2 === "slow") pos += 2;
+        return pos;
+      }
+
+      function renderScoreboard() {
+        const grid = document.getElementById("scoreGrid");
+        grid.innerHTML = "";
+
+        Object.entries(gameState.scores).forEach(([team, score]) => {
+          const item = document.createElement("div");
+          item.className = "score-item";
+          item.innerHTML = `
+                    <div class="name">${team}</div>
+                    <div class="points">${score}</div>
+                `;
+          grid.appendChild(item);
+        });
+      }
+
+      function updateCurrentTeam() {
+        const subTeam = getCurrentSubTeam();
+        document.getElementById("currentTeam").textContent = subTeam;
+        document.getElementById("questionTeam").textContent = subTeam;
+      }
+
+      function getRandomQuestion(difficulty) {
+        const pool = questions[difficulty];
+        const unused = pool.filter(
+          (_, i) => !gameState.usedQuestions[difficulty].includes(i),
+        );
+
+        if (unused.length === 0) {
+          // Reset if all used
+          gameState.usedQuestions[difficulty] = [];
+          return pool[Math.floor(Math.random() * pool.length)];
+        }
+
+        const randomIndex = Math.floor(Math.random() * unused.length);
+        const originalIndex = pool.indexOf(unused[randomIndex]);
+        gameState.usedQuestions[difficulty].push(originalIndex);
+
+        return unused[randomIndex];
+      }
+
+      function showQuestion() {
+        const team = getCurrentTeam();
+
+        // Check if team already finished
+        if (gameState.teams[team].finishOrder > 0) {
+          nextTurn();
+          return;
+        }
+
+        const difficulty = getDifficultyForPosition(team);
+        const question = getRandomQuestion(difficulty);
+        gameState.currentQuestion = question;
+        gameState.currentDifficulty = difficulty;
+
+        const modal = document.getElementById("questionModal");
+        const badge = document.getElementById("difficultyBadge");
+        const content = document.getElementById("questionContent");
+
+        // Set difficulty badge
+        const difficultyLabels = { easy: "DỄ", medium: "KHÓ", hard: "RẤT KHÓ" };
+        badge.textContent = difficultyLabels[difficulty];
+        badge.className = `difficulty-badge difficulty-${difficulty}`;
+
+        // Render question based on type
+        content.innerHTML = renderQuestionContent(question);
+
+        modal.classList.add("active");
+
+        // Start timer based on difficulty
+        startTimer(difficulty);
+      }
+
+      function startTimer(difficulty) {
+        // Clear any existing timer
+        if (gameState.timerInterval) {
+          clearInterval(gameState.timerInterval);
+        }
+
+        // Set time based on difficulty: easy=7s, medium=10s, hard=15s
+        const timeByDifficulty = { easy: 7, medium: 10, hard: 15 };
+        gameState.timeLeft = timeByDifficulty[difficulty];
+
+        const timerDisplay = document.getElementById("timerDisplay");
+        const timeLeftSpan = document.getElementById("timeLeft");
+
+        // Reset timer display
+        timeLeftSpan.textContent = gameState.timeLeft;
+        timerDisplay.classList.remove("warning");
+
+        gameState.timerInterval = setInterval(() => {
+          gameState.timeLeft--;
+          timeLeftSpan.textContent = gameState.timeLeft;
+
+          // Warning when 3 seconds or less
+          if (gameState.timeLeft <= 3) {
+            timerDisplay.classList.add("warning");
+          }
+
+          // Time's up!
+          if (gameState.timeLeft <= 0) {
+            clearInterval(gameState.timerInterval);
+            gameState.timerInterval = null;
+            timeOut();
+          }
+        }, 1000);
+      }
+
+      function stopTimer() {
+        if (gameState.timerInterval) {
+          clearInterval(gameState.timerInterval);
+          gameState.timerInterval = null;
+        }
+      }
+
+      function timeOut() {
+        // Disable all answer buttons inside the modal only
+        const modal = document.getElementById("questionModal");
+        const buttons = modal.querySelectorAll(".btn-answer, .btn-primary");
+        buttons.forEach((btn) => (btn.disabled = true));
+
+        const question = gameState.currentQuestion;
+        showResult(false, question.explanation, true);
+      }
+
+      function renderQuestionContent(question) {
+        let html = `<div class="question-text">${question.question}</div>`;
+
+        switch (question.type) {
+          case "trueFalse":
+            html += `
+                        <button class="btn btn-answer btn-true" onclick="submitAnswer(true)">✓ ĐÚNG</button>
+                        <button class="btn btn-answer btn-false" onclick="submitAnswer(false)">✗ SAI</button>
+                    `;
+            break;
+
+          case "multipleChoice":
+            question.options.forEach((option) => {
+              const letter = option.charAt(0);
+              html += `<button class="btn btn-answer" onclick="submitAnswer('${letter}')">${option}</button>`;
+            });
+            break;
+        }
+
+        html += `<div id="resultArea"></div>`;
+        return html;
+      }
+
+      function submitAnswer(answer) {
+        // Stop the timer immediately when answer is submitted
+        stopTimer();
+
+        const question = gameState.currentQuestion;
+        let isCorrect = false;
+
+        if (question.type === "trueFalse") {
+          isCorrect = answer === question.answer;
+        } else if (question.type === "multipleChoice") {
+          isCorrect = answer === question.answer;
+        }
+
+        showResult(isCorrect, question.explanation);
+      }
+
+      function showResult(isCorrect, explanation, isTimeout = false) {
+        // Stop the timer
+        stopTimer();
+
+        const resultArea = document.getElementById("resultArea");
+        const team = getCurrentTeam();
+        const subTeam = getCurrentSubTeam();
+
+        let resultMessage = isCorrect ? "✅ CHÍNH XÁC!" : "❌ SAI RỒI!";
+        if (isTimeout) {
+          resultMessage = "⏰ HẾT GIỜ!";
+        }
+
+        resultArea.innerHTML = `
+                <div class="result-display ${isCorrect ? "result-correct" : "result-wrong"}">
+                    ${resultMessage}
+                </div>
+                <div class="answer-reveal">
+                    <strong>Giải thích:</strong> ${explanation}
+                </div>
+                <button class="btn btn-primary" onclick="processResult(${isCorrect})" style="margin-top: 20px;">
+                    ➡️ TIẾP TỤC
+                </button>
+            `;
+
+        // Update score for correct answer
+        if (isCorrect) {
+          gameState.scores[subTeam] += 10;
+          renderScoreboard();
+        }
+      }
+
+      function processResult(isCorrect) {
+        const team = getCurrentTeam();
+        const teamData = gameState.teams[team];
+
+        // Re-enable all buttons in the modal before closing
+        const modal = document.getElementById("questionModal");
+        const buttons = modal.querySelectorAll(".btn-answer, .btn-primary");
+        buttons.forEach((btn) => (btn.disabled = false));
+
+        document.getElementById("questionModal").classList.remove("active");
+
+        if (isCorrect) {
+          // Check if at fork
+          const atFork1 = teamData.position === 3 && !teamData.branch;
+          const fork2Pos = teamData.branch === "slow" ? 6 : 5;
+          const atFork2 = teamData.position === fork2Pos && !teamData.branch2;
+
+          if (atFork1 || atFork2) {
+            // Show fork choice
+            gameState.pendingForkChoice = atFork1 ? 1 : 2;
+            document.getElementById("forkModal").classList.add("active");
+            return;
+          }
+
+          // Move forward
+          teamData.position++;
+
+          // Check for finish
+          checkFinish(team);
+        } else {
+          // Wrong at fork = forced to slow branch
+          const atFork1 = teamData.position === 3 && !teamData.branch;
+          const fork2Pos = teamData.branch === "slow" ? 6 : 5;
+          const atFork2 = teamData.position === fork2Pos && !teamData.branch2;
+
+          if (atFork1) {
+            teamData.branch = "slow";
+            teamData.position++;
+          } else if (atFork2) {
+            teamData.branch2 = "slow";
+            teamData.position++;
+          }
+          // Otherwise just lose turn
+        }
+
+        renderTracks();
+        nextTurn();
+      }
+
+      function chooseFork(choice) {
+        const team = getCurrentTeam();
+        const teamData = gameState.teams[team];
+
+        if (gameState.pendingForkChoice === 1) {
+          teamData.branch = choice;
+        } else {
+          teamData.branch2 = choice;
+        }
+
+        teamData.position++;
+        gameState.pendingForkChoice = null;
+
+        document.getElementById("forkModal").classList.remove("active");
+
+        checkFinish(team);
+        renderTracks();
+        nextTurn();
+      }
+
+      function checkFinish(team) {
+        const teamData = gameState.teams[team];
+        const finishPos = calculateFinalPos(teamData) + 1;
+
+        if (teamData.position >= finishPos && teamData.finishOrder === 0) {
+          gameState.finishedTeams.push(team);
+          teamData.finishOrder = gameState.finishedTeams.length;
+
+          // Award team points
+          const teamPoints = [50, 30, 20];
+          const bonus = teamPoints[teamData.finishOrder - 1] || 0;
+
+          // Add bonus to all sub-teams
+          teamData.subTeams.forEach((subTeam) => {
+            gameState.scores[subTeam] += bonus;
+          });
+
+          renderScoreboard();
+
+          // Check if game is over
+          if (gameState.finishedTeams.length === 3) {
+            endGame();
+          }
+        }
+      }
+
+      function nextTurn() {
+        const team = getCurrentTeam();
+        const teamData = gameState.teams[team];
+
+        // Move to next sub-team in current team
+        teamData.currentSubTeam = (teamData.currentSubTeam + 1) % 3;
+
+        // Move to next team
+        gameState.currentTeamIndex = (gameState.currentTeamIndex + 1) % 3;
+
+        // Skip finished teams
+        let attempts = 0;
+        while (
+          gameState.teams[getCurrentTeam()].finishOrder > 0 &&
+          attempts < 3
+        ) {
+          gameState.currentTeamIndex = (gameState.currentTeamIndex + 1) % 3;
+          attempts++;
+        }
+
+        if (attempts >= 3) {
+          endGame();
+          return;
+        }
+
+        updateCurrentTeam();
+      }
+
+      function endGame() {
+        gameState.finished = true;
+        document.getElementById("gameBoard").classList.remove("active");
+
+        const winnerScreen = document.getElementById("winnerScreen");
+        const finalScores = document.getElementById("finalScores");
+
+        // Sort teams by finish order
+        const sortedTeams = [...gameState.finishedTeams];
+        while (sortedTeams.length < 3) {
+          ["A", "B", "C"].forEach((t) => {
+            if (!sortedTeams.includes(t)) sortedTeams.push(t);
+          });
+        }
+
+        const positions = ["first", "second", "third"];
+        const trophies = ["🥇", "🥈", "🥉"];
+
+        finalScores.innerHTML = sortedTeams
+          .map((team, index) => {
+            const teamData = gameState.teams[team];
+            const totalScore = teamData.subTeams.reduce(
+              (sum, st) => sum + gameState.scores[st],
+              0,
+            );
+
+            return `
+                    <div class="final-score-card ${positions[index]}">
+                        <div class="trophy">${trophies[index]}</div>
+                        <h3>ĐỘI ${team}</h3>
+                        <p style="font-size: 2em; margin: 10px 0;">${totalScore} điểm</p>
+                        <p style="font-size: 0.9em; color: #aaa;">
+                            ${teamData.subTeams.map((st) => `${st}: ${gameState.scores[st]}`).join(" | ")}
+                        </p>
+                    </div>
+                `;
+          })
+          .join("");
+
+        winnerScreen.classList.add("active");
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        renderScoreboard();
+      });
+    </script>
+  </body>
+</html>

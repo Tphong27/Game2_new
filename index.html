@@ -54,7 +54,7 @@
             <li><strong>Về đích:</strong> Nhất +50, Nhì +30, Ba +20</li>
             <li>
               <strong>⏱️ Thời gian:</strong> Dễ = 7s, Khó = 10s, Rất khó = 15s.
-              Hết giờ = mất lượt!
+              Hết giờ vẫn được chọn đáp án!
             </li>
           </ul>
         </div>
@@ -637,6 +637,7 @@
           usedQuestions: { easy: [], medium: [], hard: [] },
           timerInterval: null,
           timeLeft: 0,
+          timeExpired: false,
         };
         document.getElementById("winnerScreen").classList.remove("active");
         document
@@ -919,6 +920,7 @@
         const question = getRandomQuestion(difficulty);
         gameState.currentQuestion = question;
         gameState.currentDifficulty = difficulty;
+        gameState.timeExpired = false; // Reset time expired flag
 
         const modal = document.getElementById("questionModal");
         const badge = document.getElementById("difficultyBadge");
@@ -949,15 +951,17 @@
         gameState.timeLeft = timeByDifficulty[difficulty];
 
         const timerDisplay = document.getElementById("timerDisplay");
-        const timeLeftSpan = document.getElementById("timeLeft");
 
-        // Reset timer display
-        timeLeftSpan.textContent = gameState.timeLeft;
+        // Reset timer display HTML (in case it was changed by timeOut)
+        timerDisplay.innerHTML = `⏱️ <span id="timeLeft">${gameState.timeLeft}</span>s`;
         timerDisplay.classList.remove("warning");
 
         gameState.timerInterval = setInterval(() => {
           gameState.timeLeft--;
-          timeLeftSpan.textContent = gameState.timeLeft;
+          const timeLeftSpan = document.getElementById("timeLeft");
+          if (timeLeftSpan) {
+            timeLeftSpan.textContent = gameState.timeLeft;
+          }
 
           // Warning when 3 seconds or less
           if (gameState.timeLeft <= 3) {
@@ -981,17 +985,19 @@
       }
 
       function timeOut() {
-        // Disable all answer buttons inside the modal only
-        const modal = document.getElementById("questionModal");
-        const buttons = modal.querySelectorAll(".btn-answer, .btn-primary");
-        buttons.forEach((btn) => (btn.disabled = true));
+        // Only show timeout warning, do NOT disable buttons or mark as wrong
+        // Player can still choose an answer
+        const timerDisplay = document.getElementById("timerDisplay");
+        timerDisplay.innerHTML =
+          '<span style="color: #ef4444; font-weight: bold;">⏰ HẾT GIỜ - Hãy chọn đáp án!</span>';
 
-        const question = gameState.currentQuestion;
-        showResult(false, question.explanation, true);
+        // Mark that time has expired (for UI feedback only)
+        gameState.timeExpired = true;
       }
 
       function renderQuestionContent(question) {
         let html = `<div class="question-text">${question.question}</div>`;
+        html += `<div class="answers-container">`;
 
         switch (question.type) {
           case "trueFalse":
@@ -1009,6 +1015,7 @@
             break;
         }
 
+        html += `</div>`;
         html += `<div id="resultArea"></div>`;
         return html;
       }
@@ -1029,27 +1036,41 @@
         showResult(isCorrect, question.explanation);
       }
 
-      function showResult(isCorrect, explanation, isTimeout = false) {
+      function showResult(isCorrect, explanation) {
         // Stop the timer
         stopTimer();
 
         const resultArea = document.getElementById("resultArea");
         const team = getCurrentTeam();
         const subTeam = getCurrentSubTeam();
+        const question = gameState.currentQuestion;
+
+        // Format the correct answer for display
+        let correctAnswerText = "";
+        if (question.type === "trueFalse") {
+          correctAnswerText = question.answer ? "ĐÚNG" : "SAI";
+        } else if (question.type === "multipleChoice") {
+          // Find the full option text for the correct answer
+          const correctOption = question.options.find(
+            (opt) => opt.charAt(0) === question.answer,
+          );
+          correctAnswerText = correctOption || question.answer;
+        }
 
         let resultMessage = isCorrect ? "✅ CHÍNH XÁC!" : "❌ SAI RỒI!";
-        if (isTimeout) {
-          resultMessage = "⏰ HẾT GIỜ!";
-        }
+        let answerLine = isCorrect
+          ? `<p><strong>📌 Đáp án:</strong> ${correctAnswerText}</p>`
+          : `<p><strong>📌 Đáp án đúng là:</strong> ${correctAnswerText}</p>`;
 
         resultArea.innerHTML = `
                 <div class="result-display ${isCorrect ? "result-correct" : "result-wrong"}">
                     ${resultMessage}
                 </div>
                 <div class="answer-reveal">
-                    <strong>Giải thích:</strong> ${explanation}
+                    ${answerLine}
+                    <h4>📖 Giải thích:</h4> ${explanation || "Không có giải thích."}
                 </div>
-                <button class="btn btn-primary" onclick="processResult(${isCorrect})" style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="processResult(${isCorrect})" style="margin-top: 12px; padding: 10px 25px;">
                     ➡️ TIẾP TỤC
                 </button>
             `;

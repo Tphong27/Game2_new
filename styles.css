@@ -92,8 +92,9 @@ header h1 span {
   display: block;
   width: 100%;
   text-align: left;
-  margin: 8px 0;
-  padding: 12px 15px;
+  margin: 5px 0;
+  padding: 10px 15px;
+  font-size: 1em;
 }
 
 .btn-answer:hover {
@@ -357,7 +358,7 @@ header h1 span {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   z-index: 1000;
   align-items: center;
   justify-content: center;
@@ -369,26 +370,30 @@ header h1 span {
 
 .modal-content {
   background: linear-gradient(135deg, #2c3e50, #34495e);
-  padding: 30px;
+  padding: 25px 30px;
   border-radius: 20px;
   max-width: 700px;
   width: 90%;
-  max-height: 80vh;
+  max-height: 95vh;
   overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  margin: auto;
 }
 
 .modal-content h2 {
   color: #f1c40f;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  font-size: 1.3em;
 }
 
 .difficulty-badge {
   display: inline-block;
-  padding: 5px 15px;
+  padding: 4px 12px;
   border-radius: 20px;
-  font-size: 0.9em;
-  margin-bottom: 15px;
+  font-size: 0.85em;
+  margin-bottom: 10px;
 }
 
 .difficulty-easy {
@@ -404,10 +409,10 @@ header h1 span {
 }
 
 .question-text {
-  font-size: 1.2em;
-  line-height: 1.6;
-  margin-bottom: 20px;
-  padding: 15px;
+  font-size: 1.1em;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  padding: 12px 15px;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
 }
@@ -425,10 +430,10 @@ header h1 span {
 
 .result-display {
   text-align: center;
-  padding: 15px;
+  padding: 10px 15px;
   border-radius: 10px;
-  margin-top: 15px;
-  font-size: 1.2em;
+  margin-top: 10px;
+  font-size: 1.1em;
 }
 
 .result-correct {
@@ -442,10 +447,43 @@ header h1 span {
 }
 
 .answer-reveal {
-  margin-top: 15px;
-  padding: 15px;
+  margin-top: 10px;
+  padding: 12px 15px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
+  font-size: 0.95em;
+  line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.answer-reveal h4 {
+  margin-bottom: 8px;
+  color: #f1c40f;
+}
+
+#questionContent {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#resultArea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Answers container - 2 columns layout */
+.answers-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.answers-container .btn-answer {
+  margin: 0;
 }
 
 /* Fork Choice Modal */
@@ -555,9 +593,9 @@ header h1 span {
 
 /* Timer */
 .timer {
-  font-size: 2em;
+  font-size: 1.6em;
   color: #f1c40f;
-  margin: 10px 0;
+  margin: 8px 0;
   font-weight: bold;
 }
 
@@ -649,14 +687,20 @@ header h1 span {
 
 /* Semi-transparent modal to see tracks */
 .modal {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
 }
 
-.modal-content {
+/* Question Modal specific - centered */
+#questionModal .modal-content {
+  max-width: 700px;
+  max-height: 90vh;
+  margin: auto;
+}
+
+/* Fork Modal specific - centered */
+#forkModal .modal-content {
   max-width: 500px;
-  max-height: 70vh;
-  margin-left: auto;
-  margin-right: 20px;
+  margin: auto;
 }
 
 /* Team Selection Modal */

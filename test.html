@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Game - ĐƯỜNG ĐUA NƯỚC</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .test-panel {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        z-index: 2000;
+        max-width: 350px;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .test-panel h3 {
+        color: #f1c40f;
+        margin-bottom: 15px;
+      }
+      .test-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9em;
+      }
+      .test-btn:hover {
+        background: #2980b9;
+      }
+      .test-btn.success {
+        background: #27ae60;
+      }
+      .test-btn.danger {
+        background: #e74c3c;
+      }
+      .test-btn.warning {
+        background: #f39c12;
+      }
+      .test-log {
+        background: #1a1a2e;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 15px;
+        max-height: 200px;
+        overflow-y: auto;
+        font-family: monospace;
+        font-size: 0.8em;
+      }
+      .test-log .info {
+        color: #3498db;
+      }
+      .test-log .success {
+        color: #27ae60;
+      }
+      .test-log .error {
+        color: #e74c3c;
+      }
+      .test-log .warn {
+        color: #f39c12;
+      }
+      .test-section {
+        border-top: 1px solid #444;
+        padding-top: 10px;
+        margin-top: 10px;
+      }
+      .test-section h4 {
+        color: #aaa;
+        font-size: 0.9em;
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1><span class="water-emoji">🌊</span> TEST MODE <span>🧪</span></h1>
+        <p>Kiểm tra các chức năng của game</p>
+      </header>
+    </div>
+
+    <!-- Question Modal (copy từ index.html) -->
+    <div id="questionModal" class="modal">
+      <div class="modal-content">
+        <h2 id="modalTitle">
+          ❓ Câu hỏi cho nhóm <span id="questionTeam">1</span>
+        </h2>
+        <span id="difficultyBadge" class="difficulty-badge"></span>
+        <div class="timer" id="timerDisplay">
+          ⏱️ <span id="timeLeft">7</span>s
+        </div>
+        <div id="questionContent">
+          <!-- Question content goes here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Test Panel -->
+    <div class="test-panel">
+      <h3>🧪 Test Panel</h3>
+
+      <div class="test-section">
+        <h4>📋 Timer Tests</h4>
+        <button class="test-btn" onclick="testTimerEasy()">
+          Test Timer DỄ (7s)
+        </button>
+        <button class="test-btn" onclick="testTimerMedium()">
+          Test Timer KHÓ (10s)
+        </button>
+        <button class="test-btn" onclick="testTimerHard()">
+          Test Timer RẤT KHÓ (15s)
+        </button>
+        <button class="test-btn warning" onclick="testTimerExpireAndNew()">
+          Test Hết giờ → Câu mới
+        </button>
+      </div>
+
+      <div class="test-section">
+        <h4>✅ Answer Display Tests</h4>
+        <button class="test-btn success" onclick="testCorrectAnswer()">
+          Test Đáp án ĐÚNG
+        </button>
+        <button class="test-btn danger" onclick="testWrongAnswer()">
+          Test Đáp án SAI
+        </button>
+        <button class="test-btn" onclick="testTrueFalseCorrect()">
+          Test Đúng/Sai - Đúng
+        </button>
+        <button class="test-btn" onclick="testTrueFalseWrong()">
+          Test Đúng/Sai - Sai
+        </button>
+      </div>
+
+      <div class="test-section">
+        <h4>📐 Layout Tests</h4>
+        <button class="test-btn" onclick="testLongExplanation()">
+          Test Giải thích DÀI
+        </button>
+        <button class="test-btn" onclick="testLongQuestion()">
+          Test Câu hỏi DÀI
+        </button>
+        <button class="test-btn" onclick="testModalCenter()">
+          Test Modal căn giữa
+        </button>
+      </div>
+
+      <div class="test-section">
+        <h4>🔄 Scenario Tests</h4>
+        <button class="test-btn warning" onclick="testFullFlow()">
+          Test luồng đầy đủ
+        </button>
+        <button class="test-btn" onclick="closeModal()">Đóng Modal</button>
+        <button class="test-btn danger" onclick="clearLog()">Xóa Log</button>
+      </div>
+
+      <div class="test-log" id="testLog">
+        <div class="info">🚀 Test panel ready...</div>
+      </div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script>
+      // ========== TEST UTILITIES ==========
+      function log(msg, type = "info") {
+        const logDiv = document.getElementById("testLog");
+        const time = new Date().toLocaleTimeString();
+        logDiv.innerHTML += `<div class="${type}">[${time}] ${msg}</div>`;
+        logDiv.scrollTop = logDiv.scrollHeight;
+      }
+
+      function clearLog() {
+        document.getElementById("testLog").innerHTML =
+          '<div class="info">🧹 Log cleared</div>';
+      }
+
+      // ========== MOCK GAME STATE ==========
+      let gameState = {
+        currentQuestion: null,
+        currentDifficulty: null,
+        timeExpired: false,
+        timerInterval: null,
+        timeLeft: 0,
+        scores: { 1: 0 },
+      };
+
+      // ========== TIMER FUNCTIONS (copy từ index.html) ==========
+      function startTimer(difficulty) {
+        if (gameState.timerInterval) {
+          clearInterval(gameState.timerInterval);
+        }
+
+        const timeByDifficulty = { easy: 7, medium: 10, hard: 15 };
+        gameState.timeLeft = timeByDifficulty[difficulty];
+
+        const timerDisplay = document.getElementById("timerDisplay");
+
+        // Reset timer display HTML
+        timerDisplay.innerHTML = `⏱️ <span id="timeLeft">${gameState.timeLeft}</span>s`;
+        timerDisplay.classList.remove("warning");
+
+        log(`Timer started: ${gameState.timeLeft}s (${difficulty})`, "info");
+
+        gameState.timerInterval = setInterval(() => {
+          gameState.timeLeft--;
+          const timeLeftSpan = document.getElementById("timeLeft");
+          if (timeLeftSpan) {
+            timeLeftSpan.textContent = gameState.timeLeft;
+          }
+
+          if (gameState.timeLeft <= 3) {
+            timerDisplay.classList.add("warning");
+          }
+
+          if (gameState.timeLeft <= 0) {
+            clearInterval(gameState.timerInterval);
+            gameState.timerInterval = null;
+            timeOut();
+          }
+        }, 1000);
+      }
+
+      function stopTimer() {
+        if (gameState.timerInterval) {
+          clearInterval(gameState.timerInterval);
+          gameState.timerInterval = null;
+          log("Timer stopped", "info");
+        }
+      }
+
+      function timeOut() {
+        const timerDisplay = document.getElementById("timerDisplay");
+        timerDisplay.innerHTML =
+          '<span style="color: #ef4444; font-weight: bold;">⏰ HẾT GIỜ - Hãy chọn đáp án!</span>';
+        gameState.timeExpired = true;
+        log("⏰ Time expired!", "warn");
+      }
+
+      // ========== QUESTION DISPLAY FUNCTIONS ==========
+      function showQuestion(question, difficulty) {
+        gameState.currentQuestion = question;
+        gameState.currentDifficulty = difficulty;
+        gameState.timeExpired = false;
+
+        const modal = document.getElementById("questionModal");
+        const badge = document.getElementById("difficultyBadge");
+        const content = document.getElementById("questionContent");
+
+        const difficultyLabels = { easy: "DỄ", medium: "KHÓ", hard: "RẤT KHÓ" };
+        badge.textContent = difficultyLabels[difficulty];
+        badge.className = `difficulty-badge difficulty-${difficulty}`;
+
+        content.innerHTML = renderQuestionContent(question);
+        modal.classList.add("active");
+
+        startTimer(difficulty);
+        log(
+          `Question displayed: ${question.question.substring(0, 50)}...`,
+          "info",
+        );
+      }
+
+      function renderQuestionContent(question) {
+        let html = `<div class="question-text">${question.question}</div>`;
+        html += `<div class="answers-container">`;
+
+        if (question.type === "trueFalse") {
+          html += `
+                    <button class="btn btn-answer btn-true" onclick="submitAnswer(true)">✓ ĐÚNG</button>
+                    <button class="btn btn-answer btn-false" onclick="submitAnswer(false)">✗ SAI</button>
+                `;
+        } else if (question.type === "multipleChoice") {
+          question.options.forEach((option) => {
+            const letter = option.charAt(0);
+            html += `<button class="btn btn-answer" onclick="submitAnswer('${letter}')">${option}</button>`;
+          });
+        }
+
+        html += `</div>`;
+        html += `<div id="resultArea"></div>`;
+        return html;
+      }
+
+      function submitAnswer(answer) {
+        stopTimer();
+
+        const question = gameState.currentQuestion;
+        let isCorrect = false;
+
+        if (question.type === "trueFalse") {
+          isCorrect = answer === question.answer;
+        } else if (question.type === "multipleChoice") {
+          isCorrect = answer === question.answer;
+        }
+
+        log(
+          `Answer submitted: ${answer}, Correct: ${isCorrect}`,
+          isCorrect ? "success" : "error",
+        );
+        showResult(isCorrect, question.explanation);
+      }
+
+      function showResult(isCorrect, explanation) {
+        stopTimer();
+
+        const resultArea = document.getElementById("resultArea");
+        const question = gameState.currentQuestion;
+
+        let correctAnswerText = "";
+        if (question.type === "trueFalse") {
+          correctAnswerText = question.answer ? "ĐÚNG" : "SAI";
+        } else if (question.type === "multipleChoice") {
+          const correctOption = question.options.find(
+            (opt) => opt.charAt(0) === question.answer,
+          );
+          correctAnswerText = correctOption || question.answer;
+        }
+
+        let resultMessage = isCorrect ? "✅ CHÍNH XÁC!" : "❌ SAI RỒI!";
+        let answerLine = isCorrect
+          ? `<p><strong>📌 Đáp án:</strong> ${correctAnswerText}</p>`
+          : `<p><strong>📌 Đáp án đúng là:</strong> ${correctAnswerText}</p>`;
+
+        resultArea.innerHTML = `
+                <div class="result-display ${isCorrect ? "result-correct" : "result-wrong"}">
+                    ${resultMessage}
+                </div>
+                <div class="answer-reveal">
+                    ${answerLine}
+                    <h4>📖 Giải thích:</h4> ${explanation || "Không có giải thích."}
+                </div>
+                <button class="btn btn-primary" onclick="closeModal()" style="margin-top: 12px; padding: 10px 25px;">
+                    ➡️ TIẾP TỤC
+                </button>
+            `;
+
+        log("Result displayed", "success");
+      }
+
+      function closeModal() {
+        stopTimer();
+        document.getElementById("questionModal").classList.remove("active");
+        log("Modal closed", "info");
+      }
+
+      // ========== TEST FUNCTIONS ==========
+
+      // Timer Tests
+      function testTimerEasy() {
+        log("--- TEST: Timer Easy ---", "info");
+        const q = questions.easy[0];
+        showQuestion(q, "easy");
+      }
+
+      function testTimerMedium() {
+        log("--- TEST: Timer Medium ---", "info");
+        const q = questions.medium[0];
+        showQuestion(q, "medium");
+      }
+
+      function testTimerHard() {
+        log("--- TEST: Timer Hard ---", "info");
+        const q = questions.hard[0];
+        showQuestion(q, "hard");
+      }
+
+      function testTimerExpireAndNew() {
+        log("--- TEST: Timer Expire then New Question ---", "info");
+        log("Step 1: Showing question with 3s timer...", "warn");
+
+        const q1 = questions.easy[0];
+        gameState.currentQuestion = q1;
+        gameState.currentDifficulty = "easy";
+
+        const modal = document.getElementById("questionModal");
+        const badge = document.getElementById("difficultyBadge");
+        const content = document.getElementById("questionContent");
+
+        badge.textContent = "TEST";
+        badge.className = "difficulty-badge difficulty-easy";
+        content.innerHTML = renderQuestionContent(q1);
+        modal.classList.add("active");
+
+        // Start with 3s timer for quick test
+        if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+        gameState.timeLeft = 3;
+
+        const timerDisplay = document.getElementById("timerDisplay");
+        timerDisplay.innerHTML = `⏱️ <span id="timeLeft">3</span>s`;
+        timerDisplay.classList.add("warning");
+
+        gameState.timerInterval = setInterval(() => {
+          gameState.timeLeft--;
+          const timeLeftSpan = document.getElementById("timeLeft");
+          if (timeLeftSpan) timeLeftSpan.textContent = gameState.timeLeft;
+
+          if (gameState.timeLeft <= 0) {
+            clearInterval(gameState.timerInterval);
+            gameState.timerInterval = null;
+            timeOut();
+
+            log(
+              "Step 2: Timer expired! Waiting 2s then showing new question...",
+              "warn",
+            );
+
+            setTimeout(() => {
+              log("Step 3: Showing NEW question with fresh timer...", "info");
+              const q2 = questions.easy[1] || questions.easy[0];
+              showQuestion(q2, "easy");
+
+              // Verify timer is working
+              setTimeout(() => {
+                const span = document.getElementById("timeLeft");
+                if (span && !isNaN(parseInt(span.textContent))) {
+                  log(
+                    `✅ PASS: Timer is working! Current: ${span.textContent}s`,
+                    "success",
+                  );
+                } else {
+                  log("❌ FAIL: Timer not working properly!", "error");
+                }
+              }, 1500);
+            }, 2000);
+          }
+        }, 1000);
+      }
+
+      // Answer Display Tests
+      function testCorrectAnswer() {
+        log("--- TEST: Correct Answer (Multiple Choice) ---", "info");
+        const q = {
+          type: "multipleChoice",
+          question: "Đây là câu hỏi test trắc nghiệm?",
+          options: [
+            "A. Đáp án A",
+            "B. Đáp án B (đúng)",
+            "C. Đáp án C",
+            "D. Đáp án D",
+          ],
+          answer: "B",
+          explanation: "Đây là giải thích cho đáp án đúng B.",
+        };
+        showQuestion(q, "easy");
+
+        setTimeout(() => {
+          submitAnswer("B"); // Correct
+        }, 500);
+      }
+
+      function testWrongAnswer() {
+        log("--- TEST: Wrong Answer (Multiple Choice) ---", "info");
+        const q = {
+          type: "multipleChoice",
+          question: "Đây là câu hỏi test trắc nghiệm?",
+          options: [
+            "A. Đáp án A",
+            "B. Đáp án B (đúng)",
+            "C. Đáp án C",
+            "D. Đáp án D",
+          ],
+          answer: "B",
+          explanation: "Đây là giải thích. Đáp án đúng là B vì lý do XYZ.",
+        };
+        showQuestion(q, "easy");
+
+        setTimeout(() => {
+          submitAnswer("A"); // Wrong
+        }, 500);
+      }
+
+      function testTrueFalseCorrect() {
+        log("--- TEST: True/False - Correct ---", "info");
+        const q = {
+          type: "trueFalse",
+          question: "Trái đất quay quanh mặt trời?",
+          answer: true,
+          explanation: "Trái đất quay quanh mặt trời trong khoảng 365 ngày.",
+        };
+        showQuestion(q, "easy");
+
+        setTimeout(() => {
+          submitAnswer(true); // Correct
+        }, 500);
+      }
+
+      function testTrueFalseWrong() {
+        log("--- TEST: True/False - Wrong ---", "info");
+        const q = {
+          type: "trueFalse",
+          question: "Mặt trăng là một ngôi sao?",
+          answer: false,
+          explanation:
+            "Mặt trăng là vệ tinh tự nhiên của Trái Đất, không phải ngôi sao.",
+        };
+        showQuestion(q, "easy");
+
+        setTimeout(() => {
+          submitAnswer(true); // Wrong (answer is false)
+        }, 500);
+      }
+
+      // Layout Tests
+      function testLongExplanation() {
+        log("--- TEST: Long Explanation ---", "info");
+        const q = {
+          type: "multipleChoice",
+          question: "Câu hỏi ngắn?",
+          options: ["A. Đáp án A", "B. Đáp án B", "C. Đáp án C", "D. Đáp án D"],
+          answer: "B",
+          explanation:
+            "Đây là một giải thích rất dài để test xem có bị tràn khung không. " +
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. " +
+            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. " +
+            "Thêm một đoạn text tiếng Việt dài nữa để kiểm tra việc xuống dòng và hiển thị đúng cách trong khung giải thích.",
+        };
+        showQuestion(q, "medium");
+
+        setTimeout(() => submitAnswer("A"), 500);
+      }
+
+      function testLongQuestion() {
+        log("--- TEST: Long Question ---", "info");
+        const q = {
+          type: "multipleChoice",
+          question:
+            "Đây là một câu hỏi rất dài để test xem modal có hiển thị đúng không? " +
+            "Câu hỏi này có thể chứa rất nhiều nội dung, bao gồm cả các thuật ngữ chuyên ngành, " +
+            "các khái niệm phức tạp về triết học, vũ trụ quan, và hình thái ý thức. " +
+            "Người chơi cần đọc kỹ câu hỏi trước khi trả lời.",
+          options: [
+            "A. Đáp án A với nội dung khá dài để test",
+            "B. Đáp án B cũng có nội dung dài tương tự",
+            "C. Đáp án C ngắn hơn",
+            "D. Đáp án D",
+          ],
+          answer: "A",
+          explanation: "Giải thích ngắn gọn.",
+        };
+        showQuestion(q, "hard");
+      }
+
+      function testModalCenter() {
+        log("--- TEST: Modal Center Position ---", "info");
+        const q = questions.easy[0];
+        showQuestion(q, "easy");
+
+        setTimeout(() => {
+          const modal = document.querySelector("#questionModal .modal-content");
+          const rect = modal.getBoundingClientRect();
+          const windowWidth = window.innerWidth;
+          const windowHeight = window.innerHeight;
+
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+
+          const isHorizontalCenter = Math.abs(centerX - windowWidth / 2) < 50;
+          const isVerticalCenter = Math.abs(centerY - windowHeight / 2) < 100;
+
+          if (isHorizontalCenter && isVerticalCenter) {
+            log(
+              `✅ PASS: Modal is centered! (${Math.round(centerX)}, ${Math.round(centerY)})`,
+              "success",
+            );
+          } else {
+            log(
+              `❌ FAIL: Modal not centered. Center: (${Math.round(centerX)}, ${Math.round(centerY)}), Expected: (${Math.round(windowWidth / 2)}, ${Math.round(windowHeight / 2)})`,
+              "error",
+            );
+          }
+        }, 100);
+      }
+
+      // Full Flow Test
+      function testFullFlow() {
+        log("--- TEST: Full Flow ---", "info");
+        log("Testing complete question → answer → result flow...", "info");
+
+        // Test 1: Show question
+        const q = questions.medium[0] || {
+          type: "multipleChoice",
+          question: "Test question?",
+          options: ["A. Option A", "B. Option B", "C. Option C", "D. Option D"],
+          answer: "B",
+          explanation: "Test explanation.",
+        };
+
+        showQuestion(q, "medium");
+        log("✅ Question displayed", "success");
+
+        // Test 2: Verify timer started
+        setTimeout(() => {
+          const timeSpan = document.getElementById("timeLeft");
+          if (timeSpan && parseInt(timeSpan.textContent) > 0) {
+            log("✅ Timer is running", "success");
+          } else {
+            log("❌ Timer issue detected", "error");
+          }
+        }, 500);
+
+        // Test 3: Submit answer and check result
+        setTimeout(() => {
+          submitAnswer(q.answer);
+
+          setTimeout(() => {
+            const resultArea = document.getElementById("resultArea");
+            if (resultArea.innerHTML.includes("CHÍNH XÁC")) {
+              log("✅ Correct answer displayed properly", "success");
+            }
+            if (resultArea.innerHTML.includes("Đáp án:")) {
+              log("✅ Answer line displayed", "success");
+            }
+            if (resultArea.innerHTML.includes("Giải thích:")) {
+              log("✅ Explanation displayed", "success");
+            }
+
+            log("🎉 Full flow test completed!", "success");
+          }, 300);
+        }, 1500);
+      }
+
+      // Initialize
+      log("Test page loaded. Click buttons to run tests.", "success");
+    </script>
+  </body>
+</html>

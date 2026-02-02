@@ -12,11 +12,11 @@ const questions = {
         'Một cộng đồng chọn "lùi một bước" để bảo toàn lực lượng, chờ thời cơ tái tổ chức. Cách ứng xử này gần nhất với:',
       options: [
         "A. Tấn công trực diện liên tục",
-        'B. "Uốn lượn" để tích tụ lực',
-        "C. Tách rời hoàn toàn khỏi môi trường",
+        "B. Tách rời hoàn toàn khỏi môi trường",
+        'C. "Uốn lượn" để tích tụ lực',
         "D. Đóng kín, không tiếp xúc bên ngoài",
       ],
-      answer: "B",
+      answer: "C",
       explanation:
         '"Nước" không đối đầu trực diện, có thể tạm lùi để tích tụ năng lượng khi gặp vật cản/kẻ thù mạnh.',
     },
@@ -26,11 +26,11 @@ const questions = {
         "Một quốc gia mở cửa tiếp thu công nghệ nhưng kiên quyết giữ lõi văn hóa nội sinh. Cách mô tả sát nhất:",
       options: [
         "A. Hòa tan để hiện đại hóa",
-        'B. Mở–đóng theo "van tự động"',
-        "C. Cố định hóa bản sắc",
-        "D. Chỉ chọn cái cũ để an toàn",
+        "B. Cố định hóa bản sắc",
+        "C. Chỉ chọn cái cũ để an toàn",
+        'D. Mở–đóng theo "van tự động"',
       ],
-      answer: "B",
+      answer: "D",
       explanation:
         '"Van tự động" nghĩa là mở để tiếp nhận cái mới, đóng để giữ cốt lõi – "hòa nhập nhưng không hòa tan".',
     },
@@ -40,11 +40,11 @@ const questions = {
         'Trong một cuộc khủng hoảng, thay vì "đốt giai đoạn", cộng đồng ưu tiên kết nối nhiều nhóm nhỏ thành liên minh. Hình ảnh phù hợp nhất:',
       options: [
         "A. Một tia lửa bùng lên",
-        "B. Các giọt nước kết tụ",
-        "C. Đá tảng đứng yên",
+        "B. Đá tảng đứng yên",
+        "C. Các giọt nước kết tụ",
         "D. Gió thổi tản mác",
       ],
-      answer: "B",
+      answer: "C",
       explanation:
         '"Sức mạnh của sự kết tụ": một giọt yếu, nhưng kết tụ thành sông/biển thì rất mạnh.',
     },
@@ -53,12 +53,12 @@ const questions = {
       question:
         "Một phong trào chia lực lượng thành nhiều hướng để mở rộng địa bàn nhưng vẫn giữ chung mục tiêu. Liên tưởng đúng nhất:",
       options: [
-        'A. "Một bọc" – nhiều nhánh',
-        "B. Một trung tâm – nhiều vua",
+        "A. Một trung tâm – nhiều vua",
+        'B. "Một bọc" – nhiều nhánh',
         "C. Một nhóm – một tuyến",
         "D. Một lần – một kết thúc",
       ],
-      answer: "A",
+      answer: "B",
       explanation:
         'Huyền thoại "một bọc (đồng bào)" giải thích chia tách để mở mang nhưng vẫn thống nhất.',
     },
@@ -83,11 +83,11 @@ const questions = {
         'Một cuộc vận động "mượn danh nghĩa" để quy tụ lực lượng, nhưng mục tiêu thực là cứu nước. Cách nhận diện phù hợp:',
       options: [
         "A. Hình thức trùng bản chất",
-        "B. Bản chất khác hình thức",
-        "C. Hình thức quyết định tất cả",
+        "B. Hình thức quyết định tất cả",
+        "C. Bản chất khác hình thức",
         "D. Không có mục tiêu",
       ],
-      answer: "B",
+      answer: "C",
       explanation:
         'Phong trào "mang danh giúp vua" nhưng thực chất mượn ngọn cờ vua để cứu nước → bản chất khác hình thức.',
     },
@@ -124,11 +124,11 @@ const questions = {
       question: '"Hộ quốc an dân" hướng tới:',
       options: [
         "A. Mở rộng thuộc địa",
-        "B. Bảo vệ đời sống dân",
-        "C. Tăng lễ nghi cung đình",
+        "B. Tăng lễ nghi cung đình",
+        "C. Bảo vệ đời sống dân",
         "D. Giảm giao thương",
       ],
-      answer: "B",
+      answer: "C",
       explanation:
         '"Hộ quốc an dân" nghĩa trọng tâm là giữ nước để an dân (bảo vệ đời sống cộng đồng).',
     },
@@ -165,12 +165,12 @@ const questions = {
       question:
         "Khi trung tâm quyền lực bị chiếm nhưng xã hội vẫn khó bị đồng hóa, điều này gợi đến:",
       options: [
-        "A. Tầng cơ sở bền vững",
-        "B. Thị trường tự điều tiết",
-        "C. Công nghệ quyết định",
-        "D. Tư duy cá nhân hóa",
+        "A. Thị trường tự điều tiết",
+        "B. Công nghệ quyết định",
+        "C. Tư duy cá nhân hóa",
+        "D. Tầng cơ sở bền vững",
       ],
-      answer: "A",
+      answer: "D",
       explanation:
         "Dù chiếm trung tâm quyền lực, kẻ xâm lược khó đồng hóa vì hệ phòng thủ xã hội nhiều lớp, làng xã bền vững.",
     },
@@ -180,11 +180,11 @@ const questions = {
         'So với mô hình "Cá nhân–Nhà nước" kiểu phương Tây, điểm khác nổi bật của "Nhà–Làng–Nước" là:',
       options: [
         "A. Thiếu luật pháp",
-        "B. Có cộng đồng trung gian",
-        "C. Không có cá nhân",
+        "B. Không có cá nhân",
+        "C. Có cộng đồng trung gian",
         "D. Không có nhà nước",
       ],
-      answer: "B",
+      answer: "C",
       explanation:
         'So với mô hình Tây phương "Cá nhân–Nhà nước", mô hình Việt nhấn mạnh cộng đồng trung gian (Làng).',
     },
@@ -195,11 +195,11 @@ const questions = {
         'Nếu cho rằng "trung quân" có thể tách khỏi "yêu nước", lập luận gần nhất là:',
       options: [
         "A. Vua luôn đúng",
-        "B. Thể chế có thể không đại diện dân tộc",
-        "C. Dân không cần tri thức",
-        "D. Bạo lực là con đường",
+        "B. Dân không cần tri thức",
+        "C. Bạo lực là con đường",
+        "D. Thể chế có thể không đại diện dân tộc",
       ],
-      answer: "B",
+      answer: "D",
       explanation:
         "Trung quân không đồng nghĩa yêu nước vì nhà nước thối nát không đại diện lợi ích dân tộc.",
     },
@@ -209,11 +209,11 @@ const questions = {
         'Khi "dân trí chưa khai mở", lựa chọn bị phản đối mạnh nhất là:',
       options: [
         "A. Cải cách giáo dục",
-        "B. Bạo động cứu nước",
-        "C. Phổ cập pháp luật",
-        "D. Mở mang thực nghiệp",
+        "B. Phổ cập pháp luật",
+        "C. Mở mang thực nghiệp",
+        "D. Bạo động cứu nước",
       ],
-      answer: "B",
+      answer: "D",
       explanation:
         "Phan Châu Trinh chuyển trọng tâm từ bạo lực sang cải cách xã hội từ bên trong; khi dân trí chưa vững, bạo động bị phê phán.",
     },
@@ -221,12 +221,12 @@ const questions = {
       type: "multipleChoice",
       question: '"Chi bằng học" nhắm trực tiếp vào:',
       options: [
-        "A. Tăng lễ nghi",
-        "B. Xây nội lực tri thức",
+        "A. Xây nội lực tri thức",
+        "B. Tăng lễ nghi",
         "C. Tôn sùng vương quyền",
         "D. Đóng cửa kinh tế",
       ],
-      answer: "B",
+      answer: "A",
       explanation:
         '"Chi bằng học" khẳng định tri thức là con đường duy nhất để thoát nô lệ → nhắm vào nội lực học tập/tri thức.',
     },
@@ -255,11 +255,11 @@ const questions = {
         'Nếu coi "quốc gia" như "nước", rủi ro lớn nhất khi thiết kế thể chế là:',
       options: [
         "A. Quá cứng, khó đổi",
-        "B. Quá lỏng, thiếu chuẩn",
-        "C. Quá chậm, thiếu lực",
-        "D. Quá nhanh, thiếu người",
+        "B. Quá chậm, thiếu lực",
+        "C. Quá nhanh, thiếu người",
+        "D. Quá lỏng, thiếu chuẩn",
       ],
-      answer: "B",
+      answer: "D",
       explanation:
         '"Tính lỏng" giúp sinh tồn nhưng nếu quá lỏng thì dễ bị hiểu như thiếu "điểm tựa", khó tạo trật tự/chuẩn chung.',
     },
@@ -268,12 +268,12 @@ const questions = {
       question:
         'Một chính sách "đối đầu để chứng minh sức mạnh" sẽ bị phê phán mạnh nhất từ lăng kính:',
       options: [
-        "A. Nhu tính bền bỉ",
-        "B. Tôn ti trật tự",
-        "C. Xuất thế tu hành",
+        "A. Tôn ti trật tự",
+        "B. Xuất thế tu hành",
+        "C. Nhu tính bền bỉ",
         "D. Ngẫu nhiên định mệnh",
       ],
-      answer: "A",
+      answer: "C",
       explanation:
         'Triết lý "Nước" đề cao nhu tính, bền bỉ, tránh đối đầu thô bạo; "đối đầu để chứng minh sức mạnh" đi ngược tinh thần đó.',
     },
@@ -283,11 +283,11 @@ const questions = {
         'Khi nói "chở thuyền" và "lật thuyền", điều nhấn mạnh chủ yếu là:',
       options: [
         "A. Kỹ thuật đóng thuyền",
-        "B. Sức mạnh tập thể",
-        "C. Quyền lực cá nhân",
-        "D. May rủi lịch sử",
+        "B. Quyền lực cá nhân",
+        "C. May rủi lịch sử",
+        "D. Sức mạnh tập thể",
       ],
-      answer: "B",
+      answer: "D",
       explanation:
         '"Chở thuyền/lật thuyền" nói về sức mạnh tập thể khi kết tụ (dân/cộng đồng).',
     },
@@ -296,12 +296,12 @@ const questions = {
       question:
         'Một mô hình phát triển "bùng nổ ngắn hạn" được ví gần với "Lửa". Phản đề tương ứng với "Nước" là:',
       options: [
-        "A. Ổn định dài hạn",
-        "B. Thống trị tuyệt đối",
-        "C. Tách biệt triệt để",
-        "D. Phô trương liên tục",
+        "A. Thống trị tuyệt đối",
+        "B. Tách biệt triệt để",
+        "C. Phô trương liên tục",
+        "D. Ổn định dài hạn",
       ],
-      answer: "A",
+      answer: "D",
       explanation:
         'Lửa = bùng nổ, trực diện; Nước = bền bỉ, nhu hòa → phản đề của "bùng nổ ngắn hạn" là "ổn định dài hạn".',
     },
@@ -312,11 +312,11 @@ const questions = {
         'Trong logic "vô úy" gắn với bảo vệ cộng đồng, hành động hợp nhất là:',
       options: [
         "A. Giữ im lặng mọi lúc",
-        "B. Can đảm vì sự sống chung",
-        "C. Từ bỏ mọi trách nhiệm",
+        "B. Từ bỏ mọi trách nhiệm",
+        "C. Can đảm vì sự sống chung",
         "D. Chỉ lo tu dưỡng cá nhân",
       ],
-      answer: "B",
+      answer: "C",
       explanation:
         '"Vô úy" gắn với tinh thần nhập thế/hộ quốc an dân → can đảm vì lợi ích chung, không phải rút lui khỏi trách nhiệm.',
     },
@@ -325,12 +325,12 @@ const questions = {
       question:
         'Một chiến lược "lấy yếu chống mạnh" bằng cách tận dụng địa hình và thời cơ gần nhất với:',
       options: [
-        "A. Thuận thiên, vô vi",
-        "B. Tam cương, ngũ thường",
-        "C. Xuất thế, đoạn dục",
-        "D. Duy vật cơ giới",
+        "A. Tam cương, ngũ thường",
+        "B. Xuất thế, đoạn dục",
+        "C. Duy vật cơ giới",
+        "D. Thuận thiên, vô vi",
       ],
-      answer: "A",
+      answer: "D",
       explanation:
         '"Lấy yếu chống mạnh" bằng linh hoạt, thuận thời thế gần với tinh thần nhu thắng cương/uyển chuyển (tương ứng "nước").',
     },
@@ -339,12 +339,12 @@ const questions = {
       question:
         'Trong ngoại giao, "kiên định nguyên tắc, mềm dẻo phương pháp" tương ứng với:',
       options: [
-        "A. Quyền lực tuyệt đối",
-        'B. "Bất biến" và "vạn biến"',
+        'A. "Bất biến" và "vạn biến"',
+        "B. Quyền lực tuyệt đối",
         "C. Tư lợi ngắn hạn",
         "D. Cắt đứt quan hệ",
       ],
-      answer: "B",
+      answer: "A",
       explanation:
         '"Bất biến/vạn biến" là cách nói đúng tinh thần giữ lõi nhưng thay phương pháp (giống "van tự động").',
     },
@@ -353,11 +353,11 @@ const questions = {
       question: 'Khi một hệ tư tưởng được "Việt hóa", điều đó hàm ý:',
       options: [
         "A. Sao chép nguyên mẫu",
-        "B. Chọn lọc theo mục tiêu tồn tại",
-        "C. Phủ nhận hoàn toàn nguồn gốc",
+        "B. Phủ nhận hoàn toàn nguồn gốc",
+        "C. Chọn lọc theo mục tiêu tồn tại",
         "D. Giữ nguyên mọi giáo điều",
       ],
-      answer: "B",
+      answer: "C",
       explanation:
         '"Việt hóa" là tiếp thu có mục đích, chọn lọc để phục vụ "Tồn tại & Độc lập", không tiếp thu thụ động.',
     },
@@ -368,11 +368,11 @@ const questions = {
         'Nếu "Làng" suy yếu nhanh, mạch nuôi dưỡng lòng yêu nước có nguy cơ:',
       options: [
         "A. Chuyển thẳng sang pháp lý thuần túy",
-        "B. Mất kênh chuyển hóa giá trị gần gũi",
-        "C. Tự động tăng tính cố kết",
-        "D. Không còn xung đột xã hội",
+        "B. Tự động tăng tính cố kết",
+        "C. Không còn xung đột xã hội",
+        "D. Mất kênh chuyển hóa giá trị gần gũi",
       ],
-      answer: "B",
+      answer: "D",
       explanation:
         'Nếu "Làng" suy yếu, sẽ mất kênh chuyển hóa giá trị gần gũi (nhà → làng → nước), làm đứt mạch thẩm thấu.',
     },
@@ -382,11 +382,11 @@ const questions = {
         'Một chương trình giáo dục chỉ nhấn vào nghĩa vụ với Nhà nước mà bỏ qua gia đình–cộng đồng sẽ "thiếu" nhất ở:',
       options: [
         "A. Tính biểu tượng",
-        "B. Nền tảng đạo đức thường nhật",
-        "C. Khả năng ra quyết định",
-        "D. Kỹ năng kỹ thuật",
+        "B. Khả năng ra quyết định",
+        "C. Kỹ năng kỹ thuật",
+        "D. Nền tảng đạo đức thường nhật",
       ],
-      answer: "B",
+      answer: "D",
       explanation:
         "Bỏ qua gia đình–cộng đồng sẽ thiếu nền chuẩn mực đạo đức thường nhật vốn hình thành từ hai tầng dưới.",
     },
@@ -396,11 +396,11 @@ const questions = {
         'Câu "nhà tan thì nước mất, nước mất thì nhà tan" hàm ý quan hệ:',
       options: [
         "A. Một chiều từ trên xuống",
-        "B. Hai chiều phụ thuộc",
-        "C. Không liên quan nhau",
+        "B. Không liên quan nhau",
+        "C. Hai chiều phụ thuộc",
         "D. Chỉ mang tính ẩn dụ",
       ],
-      answer: "B",
+      answer: "C",
       explanation:
         '"Nước" là mái nhà chung nhưng sự phục tùng lợi ích quốc gia không cưỡng ép thuần túy, mà dựa logic đạo đức từ Nhà–Làng → quan hệ hai chiều phụ thuộc.',
     },
@@ -410,12 +410,12 @@ const questions = {
       question:
         'Trong bộ ba "Khai dân trí – Chấn dân khí – Hậu dân sinh", bước tạo nền cho hai bước còn lại là:',
       options: [
-        "A. Hậu dân sinh",
-        "B. Chấn dân khí",
-        "C. Khai dân trí",
+        "A. Khai dân trí",
+        "B. Hậu dân sinh",
+        "C. Chấn dân khí",
         "D. Tất cả đồng thời, không thứ tự",
       ],
-      answer: "C",
+      answer: "A",
       explanation:
         '"Khai dân trí" được đặt "trước hết là phải học", làm nền cho các trụ cột còn lại.',
     },
@@ -423,8 +423,8 @@ const questions = {
       type: "multipleChoice",
       question:
         "Một phong trào chỉ hô hào hy sinh nhưng bỏ qua năng lực nghề nghiệp–kinh tế sẽ thiếu nhất ở trụ cột:",
-      options: ["A. Dân sinh", "B. Dân trí", "C. Dân khí", "D. Danh phận"],
-      answer: "A",
+      options: ["A. Dân trí", "B. Dân khí", "C. Danh phận", "D. Dân sinh"],
+      answer: "D",
       explanation:
         'Nếu chỉ hô hy sinh mà bỏ nghề nghiệp–kinh tế thì thiếu "Hậu dân sinh" (nền vật chất để duy trì xã hội độc lập).',
     },
@@ -433,12 +433,12 @@ const questions = {
       question:
         'Nếu mục tiêu là "dân quyền", hành động nào phù hợp hơn về logic?',
       options: [
-        "A. Giữ dân trong ngu muội để dễ trị",
-        "B. Dạy quyền–nghĩa vụ công dân",
+        "A. Dạy quyền–nghĩa vụ công dân",
+        "B. Giữ dân trong ngu muội để dễ trị",
         "C. Tôn thờ bạo lực như cứu cánh",
         "D. Đồng nhất yêu nước với phục tùng",
       ],
-      answer: "B",
+      answer: "A",
       explanation:
         'Dân quyền cần hiểu quyền & nghĩa vụ công dân; tài liệu nêu rõ "học về quyền và nghĩa vụ công dân".',
     },
@@ -448,11 +448,11 @@ const questions = {
         'Lập trường "phản đối bạo động khi dân khí chưa vững" hàm ý tiêu chuẩn đánh giá hành động là:',
       options: [
         "A. Độ ồn truyền thông",
-        "B. Tính bền vững độc lập",
-        "C. Lợi ích nhóm nhỏ",
-        "D. Sự hài lòng tức thời",
+        "B. Lợi ích nhóm nhỏ",
+        "C. Sự hài lòng tức thời",
+        "D. Tính bền vững độc lập",
       ],
-      answer: "B",
+      answer: "D",
       explanation:
         'Tiêu chuẩn là tính bền vững nội lực: nguyên nhân mất nước không chỉ do quân sự mà do "yếu kém nội lực"; nên chọn cách làm bền vững.',
     },
@@ -466,12 +466,12 @@ const questions = {
       question:
         'Trong chiến lược "nước", hành động nào mâu thuẫn nhất với tinh thần thích ứng?',
       options: [
-        "A. Thay đổi phương thức theo hoàn cảnh",
-        "B. Duy trì bản chất cốt lõi",
-        "C. Từ chối mọi điều chỉnh",
+        "A. Từ chối mọi điều chỉnh",
+        "B. Thay đổi phương thức theo hoàn cảnh",
+        "C. Duy trì bản chất cốt lõi",
         "D. Lựa thời điểm để phản công",
       ],
-      answer: "C",
+      answer: "A",
       explanation:
         '"Nước" cốt ở thích ứng theo hoàn cảnh; "từ chối mọi điều chỉnh" mâu thuẫn nhất.',
     },
@@ -481,11 +481,11 @@ const questions = {
         '"Tính lỏng" vừa là sức mạnh vừa là nguy cơ. Nguy cơ tinh vi nhất là:',
       options: [
         "A. Thiếu lãnh đạo",
-        "B. Dễ bị hiểu nhầm là vô nguyên tắc",
-        "C. Không có nguồn lực",
+        "B. Không có nguồn lực",
+        "C. Dễ bị hiểu nhầm là vô nguyên tắc",
         "D. Không có truyền thông",
       ],
-      answer: "B",
+      answer: "C",
       explanation:
         'Nguy cơ tinh vi của "lỏng" là bị hiểu nhầm thành vô nguyên tắc, trong khi tài liệu nhấn "mở/đóng để giữ cốt lõi".',
     },
@@ -495,12 +495,12 @@ const questions = {
       question:
         'Nếu đặt "Tồn tại & Độc lập" làm tiêu chuẩn, hành vi nào ít phù hợp nhất với tinh thần dung hợp?',
       options: [
-        "A. Gạn lọc cái hữu ích",
-        "B. Điều chỉnh theo bối cảnh",
-        "C. Bảo lưu cốt lõi",
-        "D. Đồng nhất mọi thứ thành một",
+        "A. Đồng nhất mọi thứ thành một",
+        "B. Gạn lọc cái hữu ích",
+        "C. Điều chỉnh theo bối cảnh",
+        "D. Bảo lưu cốt lõi",
       ],
-      answer: "D",
+      answer: "A",
       explanation:
         'Dung hợp là "gạn đục khơi trong", không đồng nhất mọi thứ thành một.',
     },
@@ -509,12 +509,12 @@ const questions = {
       question:
         "Một nhà lãnh đạo tu hành nhưng vẫn quản trị biên cương và cải hóa xã hội phản ánh mạnh nhất:",
       options: [
-        "A. Phật giáo yếm thế",
-        "B. Phật giáo nhập thế",
+        "A. Phật giáo nhập thế",
+        "B. Phật giáo yếm thế",
         "C. Đạo giáo thần bí",
         "D. Nho giáo pháp gia",
       ],
-      answer: "B",
+      answer: "A",
       explanation:
         'Sự đối lập "yếm thế" với "nhập thế"; hình mẫu "đạo–đời" phản ánh Phật giáo nhập thế.',
     },
@@ -524,11 +524,11 @@ const questions = {
         'Tư duy "trung nghĩa" (đặt Nước/Dân lên trên Vua) sẽ xử lý mâu thuẫn "lệnh vua gây hại dân" theo hướng:',
       options: [
         "A. Tuân lệnh vô điều kiện",
-        "B. Ưu tiên lợi ích dân tộc",
-        "C. Né tránh mọi quyết định",
+        "B. Né tránh mọi quyết định",
+        "C. Ưu tiên lợi ích dân tộc",
         "D. Chuyển sang lợi ích cá nhân",
       ],
-      answer: "B",
+      answer: "C",
       explanation:
         'Khi vua không đại diện lợi ích dân tộc, "Trung" chuyển hóa thành "Nghĩa" → ưu tiên Nước/Dân.',
     },
@@ -551,11 +551,11 @@ const questions = {
       question: 'Trong khung Nho–Phật–Lão, cặp ghép nào "lệch" nhất?',
       options: [
         "A. Nho – kỷ cương xã hội",
-        "B. Phật – hộ quốc an dân",
-        "C. Lão – nhu thắng cương",
-        "D. Nho – phủ nhận trật tự",
+        "B. Nho – phủ nhận trật tự",
+        "C. Phật – hộ quốc an dân",
+        "D. Lão – nhu thắng cương",
       ],
-      answer: "D",
+      answer: "B",
       explanation:
         'Nho giáo gắn với trật tự/kỷ cương; "Nho = phủ nhận trật tự" là ghép sai.',
     },
@@ -564,12 +564,12 @@ const questions = {
       question:
         'Khi nói "tránh đối đầu trực diện lúc địch mạnh", điểm nhấn nằm ở:',
       options: [
-        "A. Sức mạnh vũ khí",
-        "B. Quản trị nhịp độ xung đột",
+        "A. Quản trị nhịp độ xung đột",
+        "B. Sức mạnh vũ khí",
         "C. Phô trương biểu tượng",
         "D. Thống nhất khẩu hiệu",
       ],
-      answer: "B",
+      answer: "A",
       explanation:
         '"Tránh đối đầu trực diện lúc địch mạnh" là quản trị nhịp độ xung đột: lùi–tích tụ–chờ thời cơ.',
     },
@@ -593,12 +593,12 @@ const questions = {
       question:
         'Nếu "Làng" là "môi trường đệm", chức năng "đệm" thể hiện rõ nhất khi:',
       options: [
-        "A. Chuẩn mực quốc gia được biến thành lệ sống",
-        "B. Luật quốc gia bị thay bằng luật rừng",
-        "C. Gia đình tách khỏi xã hội",
+        "A. Luật quốc gia bị thay bằng luật rừng",
+        "B. Gia đình tách khỏi xã hội",
+        "C. Chuẩn mực quốc gia được biến thành lệ sống",
         "D. Cá nhân phủ nhận mọi ràng buộc",
       ],
-      answer: "A",
+      answer: "C",
       explanation:
         '"Đệm" nghĩa là biến chuẩn mực quốc gia thành lệ sống tại cộng đồng; yêu nước thẩm thấu từ Nhà → Làng → Nước.',
     },
@@ -623,11 +623,11 @@ const questions = {
         '"Chấn dân khí" nếu bị hiểu lệch thành "kích động cực đoan" sẽ mâu thuẫn với:',
       options: [
         "A. Tự tôn dân tộc",
-        "B. Dám đấu tranh chính đáng",
-        "C. Lý trí xã hội tỉnh táo",
+        "B. Lý trí xã hội tỉnh táo",
+        "C. Dám đấu tranh chính đáng",
         "D. Khát vọng vươn lên",
       ],
-      answer: "C",
+      answer: "B",
       explanation:
         '"Chấn dân khí" là vực dậy tự tôn & dám đấu tranh chính đáng; hiểu lệch thành cực đoan sẽ trái với "yêu nước là thức tỉnh lý trí xã hội".',
     },
@@ -636,12 +636,12 @@ const questions = {
       question:
         'Một chương trình "mở trường dạy khoa học–kỹ thuật, giảm học từ chương, cổ vũ thực nghiệp" tương ứng mạnh nhất với:',
       options: [
-        "A. Khai dân trí",
-        "B. Chấn dân khí",
-        "C. Hậu dân sinh",
+        "A. Chấn dân khí",
+        "B. Hậu dân sinh",
+        "C. Khai dân trí",
         "D. Trung quân",
       ],
-      answer: "A",
+      answer: "C",
       explanation:
         'Mở trường khoa học–kỹ thuật, bỏ từ chương, cổ vũ thực nghiệp chính là mô tả "Khai dân trí".',
     },
@@ -650,12 +650,12 @@ const questions = {
       question:
         'Trong logic của Phan Châu Trinh, "cứu nước" bền vững đòi hỏi điều kiện nào trước tiên?',
       options: [
-        "A. Thắng một trận lớn",
-        "B. Nâng nội lực xã hội",
+        "A. Nâng nội lực xã hội",
+        "B. Thắng một trận lớn",
         "C. Có lãnh tụ quân sự",
         "D. Cắt đứt giao thương",
       ],
-      answer: "B",
+      answer: "A",
       explanation:
         "Cốt lõi là nâng nội lực xã hội (tri thức, dân quyền, phát triển con người), không phải thắng 1 trận.",
     },
@@ -664,12 +664,12 @@ const questions = {
       question:
         'Nếu một nhà nước "thối nát" không đại diện lợi ích dân tộc, lựa chọn nào giữ đúng tinh thần "dân quyền" mà vẫn tránh hỗn loạn?',
       options: [
-        "A. Thần phục tuyệt đối",
-        "B. Cải cách xã hội từ bên trong",
+        "A. Cải cách xã hội từ bên trong",
+        "B. Thần phục tuyệt đối",
         "C. Đốt phá mọi thiết chế",
         "D. Rút lui khỏi đời sống công",
       ],
-      answer: "B",
+      answer: "A",
       explanation:
         "Con đường được nhấn mạnh là cải cách xã hội từ bên trong, thay vì phá hủy mọi thiết chế.",
     },
@@ -679,11 +679,11 @@ const questions = {
         '"Hậu dân sinh" khi được ưu tiên sai cách (chỉ chạy theo giàu nhanh) sẽ làm lệch mục tiêu vì thiếu:',
       options: [
         "A. Kỷ luật lao động",
-        "B. Nền đạo đức–chính trị đi kèm",
-        "C. Động lực cạnh tranh",
+        "B. Động lực cạnh tranh",
+        "C. Nền đạo đức–chính trị đi kèm",
         "D. Tăng trưởng số liệu",
       ],
-      answer: "B",
+      answer: "C",
       explanation:
         '"Hậu dân sinh" cần đi cùng mục tiêu độc lập & tiến bộ; nếu chỉ chạy "giàu nhanh" mà thiếu nền đạo đức–chính trị sẽ lệch tinh thần.',
     },
@@ -705,8 +705,8 @@ const questions = {
       type: "multipleChoice",
       question:
         'Trong ba trụ cột Tam Dân, cặp nào dễ "đứt gãy" nhất nếu bỏ qua giáo dục?',
-      options: ["A. Trí–khí", "B. Khí–sinh", "C. Trí–sinh", "D. Trí–danh"],
-      answer: "A",
+      options: ["A. Khí–sinh", "B. Trí–khí", "C. Trí–sinh", "D. Trí–danh"],
+      answer: "B",
       explanation:
         'Nếu bỏ giáo dục, "Dân trí" suy giảm kéo theo "Dân khí" (khí thế/tự tôn) khó bền; Khai dân trí làm nền, rồi mới chấn dân khí.',
     },

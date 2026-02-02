@@ -14,8 +14,7 @@
           <span class="water-emoji">💧</span>
         </h1>
         <p>
-          Flow Race - Phần I: Cội nguồn Triết học – Vũ trụ quan & Hình thái Ý
-          thức
+          Flow Race - Cội nguồn và bước ngoặt của tư tưởng yêu nước Việt Nam
         </p>
       </header>
 
@@ -946,8 +945,8 @@
           clearInterval(gameState.timerInterval);
         }
 
-        // Set time based on difficulty: easy=7s, medium=10s, hard=15s
-        const timeByDifficulty = { easy: 7, medium: 10, hard: 15 };
+        // Set time based on difficulty: easy=5s, medium=7s, hard=10s
+        const timeByDifficulty = { easy: 5, medium: 7, hard: 10 };
         gameState.timeLeft = timeByDifficulty[difficulty];
 
         const timerDisplay = document.getElementById("timerDisplay");
@@ -985,14 +984,66 @@
       }
 
       function timeOut() {
-        // Only show timeout warning, do NOT disable buttons or mark as wrong
-        // Player can still choose an answer
+        // Show timeout warning with skip button
         const timerDisplay = document.getElementById("timerDisplay");
-        timerDisplay.innerHTML =
-          '<span style="color: #ef4444; font-weight: bold;">⏰ HẾT GIỜ - Hãy chọn đáp án!</span>';
+        timerDisplay.innerHTML = `
+          <span style="color: #ef4444; font-weight: bold;">⏰ HẾT GIỜ - Hãy chọn đáp án!</span>
+          <button class="btn btn-skip" onclick="skipQuestion()" style="
+            display: block;
+            margin: 10px auto 0;
+            padding: 8px 20px;
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+          ">
+            ⏭️ BỎ QUA - LƯỢT KẾ TIẾP
+          </button>
+          <small style="display: block; color: #f39c12; margin-top: 5px;">⚠️ Bỏ qua sẽ tính là SAI</small>
+        `;
 
         // Mark that time has expired (for UI feedback only)
         gameState.timeExpired = true;
+      }
+
+      function skipQuestion() {
+        // Stop any timer still running
+        stopTimer();
+
+        const question = gameState.currentQuestion;
+        const resultArea = document.getElementById("resultArea");
+
+        // Format the correct answer for display
+        let correctAnswerText = "";
+        if (question.type === "trueFalse") {
+          correctAnswerText = question.answer ? "ĐÚNG" : "SAI";
+        } else if (question.type === "multipleChoice") {
+          const correctOption = question.options.find(
+            (opt) => opt.charAt(0) === question.answer,
+          );
+          correctAnswerText = correctOption || question.answer;
+        }
+
+        // Show result as WRONG (skipped)
+        resultArea.innerHTML = `
+          <div class="result-display result-wrong">
+            ⏭️ ĐÃ BỎ QUA - TÍNH LÀ SAI!
+          </div>
+          <div class="answer-reveal">
+            <p><strong>📌 Đáp án đúng là:</strong> ${correctAnswerText}</p>
+            <h4>📖 Giải thích:</h4> ${question.explanation || "Không có giải thích."}
+          </div>
+          <button class="btn btn-primary" onclick="processResult(false)" style="margin-top: 12px; padding: 10px 25px;">
+            ➡️ TIẾP TỤC
+          </button>
+        `;
+
+        // Disable all answer buttons to prevent clicking after skip
+        const modal = document.getElementById("questionModal");
+        const answerButtons = modal.querySelectorAll(".btn-answer");
+        answerButtons.forEach((btn) => (btn.disabled = true));
       }
 
       function renderQuestionContent(question) {
@@ -1170,22 +1221,38 @@
 
           renderScoreboard();
 
-          // First team to finish - show celebration and end game!
-          if (teamData.finishOrder === 1) {
-            showWinnerCelebration(team);
+          // Show celebration for 1st and 2nd place
+          if (teamData.finishOrder === 1 || teamData.finishOrder === 2) {
+            showWinnerCelebration(team, teamData.finishOrder);
           }
         }
       }
 
-      function showWinnerCelebration(team) {
+      function showWinnerCelebration(team, finishOrder) {
         const teamData = gameState.teams[team];
         const totalScore = teamData.subTeams.reduce(
           (sum, st) => sum + gameState.scores[st],
           0,
         );
 
-        // Update winner modal
-        document.getElementById("winnerTeamName").textContent = `ĐỘI ${team}`;
+        // Update winner modal based on finish order
+        const modal = document.getElementById("winnerCelebrationModal");
+        const winnerMessage = document.querySelector(".winner-message");
+        const winnerTrophy = document.querySelector(".winner-trophy");
+
+        if (finishOrder === 1) {
+          winnerTrophy.textContent = "🏆";
+          winnerMessage.textContent = "🎉 CHÚC MỪNG! 🎉";
+          document.getElementById("winnerTeamName").textContent = `ĐỘI ${team}`;
+          document.querySelector(".celebration-container > p").textContent =
+            "ĐÃ VỀ ĐÍCH ĐẦU TIÊN!";
+        } else if (finishOrder === 2) {
+          winnerTrophy.textContent = "🥈";
+          winnerMessage.textContent = "🎊 Á QUÂN! 🎊";
+          document.getElementById("winnerTeamName").textContent = `ĐỘI ${team}`;
+          document.querySelector(".celebration-container > p").textContent =
+            "ĐÃ VỀ ĐÍCH THỨ HAI!";
+        }
 
         // Calculate stats
         const branchPath =
@@ -1208,13 +1275,21 @@
           </div>
         `;
 
+        // Update button based on finish order
+        const celebrationBtn = modal.querySelector(".btn-primary");
+        if (finishOrder === 1) {
+          celebrationBtn.textContent = "▶️ TIẾP TỤC CHƠI";
+          celebrationBtn.setAttribute("onclick", "continueAfterWinner()");
+        } else {
+          celebrationBtn.textContent = "📊 XEM KẾT QUẢ TỔNG";
+          celebrationBtn.setAttribute("onclick", "showFinalResults()");
+        }
+
         // Create confetti
         createConfetti();
 
         // Show modal
-        document
-          .getElementById("winnerCelebrationModal")
-          .classList.add("active");
+        modal.classList.add("active");
       }
 
       function createConfetti() {
@@ -1245,6 +1320,16 @@
             setTimeout(() => confetti.remove(), 4000);
           }, i * 50);
         }
+      }
+
+      function continueAfterWinner() {
+        document
+          .getElementById("winnerCelebrationModal")
+          .classList.remove("active");
+
+        // Continue the game - move to next turn
+        renderTracks();
+        nextTurn();
       }
 
       function showFinalResults() {
